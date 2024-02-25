@@ -106,7 +106,7 @@ class OlmMachine(
         # self.client.add_event_handler(EventType.ROOM_KEY_WITHHELD, self.handle_room_key_withheld)
         # self.client.add_event_handler(EventType.ORG_MATRIX_ROOM_KEY_WITHHELD,
         #                               self.handle_room_key_withheld)
-        self.client.add_event_handler(EventType.ROOM_MEMBER, self.handle_member_event)
+        self.client.add_event_handler(EventType.ROOM_MEMBER, self.handle_member_event, wait_sync=True)
 
     async def load(self) -> None:
         """Load the Olm account into memory, or create one if the store doesn't have one stored."""

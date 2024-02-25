@@ -250,7 +250,7 @@ class Syncer(ABC):
         tasks = []
         for handler, wait_sync in handlers:
             if force_synchronous or wait_sync:
-                tasks.append(asyncio.create_task(self._catch_errors(handler, data)))
+                tasks.append(self._catch_errors(handler, data))
             else:
                 background_task.create(self._catch_errors(handler, data))
         return tasks
@@ -471,7 +471,8 @@ class Syncer(ABC):
             start = time.monotonic()
             try:
                 tasks = self.handle_sync(data)
-                await asyncio.gather(*tasks)
+                for task in tasks:
+                    await task
             except Exception:
                 self.log.exception(f"Sync handling ({current_batch}) errored")
             else:
